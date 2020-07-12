@@ -3,3 +3,4 @@ ruby "2.7.1"
 
 gem "damerau-levenshtein"
 gem "rspec"
+gem "pry-byebug"
