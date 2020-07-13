@@ -11,6 +11,6 @@ class Scanner
       end
     end
 
-    @detectors.map(&:detections).join
+    @detectors.map(&:positive_detections).flatten
   end
 end

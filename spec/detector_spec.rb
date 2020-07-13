@@ -36,7 +36,7 @@ RSpec.describe Detector do
 
     it "detects the presence of the given intruder" do
       sample_lines.each_with_index { |line, idx| detector.push(line, idx) }
-      expect(detector.detections.length).to eq(1)
+      expect(detector.positive_detections.length).to eq(1)
     end
   end
 
@@ -59,7 +59,7 @@ RSpec.describe Detector do
 
     it "returns as many detections as there are intruders on the sample" do
       sample_lines.each_with_index { |line, idx| detector.push(line, idx) }
-      expect(detector.detections.length).to eq(3)
+      expect(detector.positive_detections.length).to eq(3)
     end
   end
 
@@ -85,7 +85,7 @@ RSpec.describe Detector do
 
     it "discards false positives, only valid detections are returned" do
       sample_lines.each_with_index { |line, idx| detector.push(line, idx) }
-      expect(detector.detections.length).to eq(1)
+      expect(detector.positive_detections.length).to eq(1)
     end
   end
 end

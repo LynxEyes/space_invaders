@@ -1,4 +1,8 @@
 Intruder = Struct.new(:bitmap) do
+  def length
+    bitmap.length
+  end
+
   def width
     bitmap.first.length
   end

@@ -11,19 +11,18 @@ class Detector
         .each_cons(@intruder.width)
         .map(&:join)
         .each_with_index do |sample, column_number|
-          check_for_new_detection(sample, column_number)
+          check_for_new_detection(sample, column_number, line_number)
           push_sample_to_detections(sample, column_number)
         end
   end
 
-  def detections
-    # TODO: this
-    []
+  def positive_detections
+    @detections.select(&:positive?)
   end
 
   private
 
-  def check_for_new_detection(sample, column_number)
+  def check_for_new_detection(sample, column_number, l)
     return unless @intruder.head_matches?(sample)
 
     @detections << Detection.new(@intruder, column_number)
