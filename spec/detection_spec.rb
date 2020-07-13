@@ -94,22 +94,44 @@ RSpec.describe Detection do
   end
 
   context "with inexact matches" do
-    let(:samples) do
-      %w[---o---o---
-         ---o---o---
-         --ooooooo--
-         -oo-ooo-oo-
-         ooooooooooo
-         o-ooooooo-o
-         o-o-----o-o
-         ---oo-oo---]
+    context "with minimal difference" do
+      let(:samples) do
+        %w[---o---o---
+           ---o---o---
+           --ooooooo--
+           -oo-ooo-oo-
+           ooooooooooo
+           o-ooooooo-o
+           o-o-----o-o
+           ---oo-oo---]
+      end
+
+      it "still detects an intruder" do
+        samples.each { |sample| detection.push(sample, column) }
+
+        expect(detection).not_to be_invalid
+        expect(detection).to be_positive
+      end
     end
 
-    it "still detects an intruder" do
-      samples.each { |sample| detection.push(sample, column) }
+    context "with large number of differences" do
+      let(:samples) do
+        %w[---o---o---
+           --o-----o--
+           --ooooooo--
+           -ooo-o-ooo-
+           ooooooooooo
+           oo-ooooo-oo
+           o-o-----o-o
+           --o-o-o-o--]
+      end
 
-      expect(detection).not_to be_invalid
-      expect(detection).to be_positive
+      it "doen't detects an intruder" do
+        samples.each { |sample| detection.push(sample, column) }
+
+        expect(detection).to be_invalid
+        expect(detection).not_to be_positive
+      end
     end
   end
 end

@@ -7,7 +7,7 @@ Intruder = Struct.new(:bitmap) do
     bitmap.first.length
   end
 
-  def head_matches?(sample)
-    sample == bitmap.first
+  def [](number)
+    bitmap[number]
   end
 end

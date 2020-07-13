@@ -19,12 +19,4 @@ RSpec.describe Intruder do
   it "calculates intruder length to the number of lines of the bitmap" do
     expect(intruder.length).to eq(3)
   end
-
-  it "signals a potential match when a sample equals the first bitmap line" do
-    expect(intruder.head_matches?("--o--")).to be_truthy
-  end
-
-  it "doesn't signal a potential match when a sample differs the first bitmap line" do
-    expect(intruder.head_matches?("o-o-o")).to be_falsy
-  end
 end
