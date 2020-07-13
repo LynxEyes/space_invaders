@@ -37,16 +37,16 @@ RSpec.describe Detection do
     end
   end
 
-context "with samples that don't match the intruder" do
+  context "with samples that don't match the intruder" do
     let(:samples) do
       %w[--o-----o--
          o--o---o--o
          --ooooooo--
-         -oo-ooo-oo-
+         -ooooooooo-
          ooooooooooo
          o-ooooooo-o
-         o-o-----o-o
-         ---oo-oo---]
+         o-ooooooo-o
+         ---ooooo---]
     end
 
     it "becomes a non-positive detection" do
@@ -57,7 +57,7 @@ context "with samples that don't match the intruder" do
     end
   end
 
-  context "" do
+  context "feeding the detection with samples from different places" do
     let(:samples_on_other_column) do
       %w[--o-----o--
          oo-o-o-o-oo
@@ -87,6 +87,26 @@ context "with samples that don't match the intruder" do
         detection.push(good_sample, column)
         detection.push(bad_sample, column + 1)
       end
+
+      expect(detection).not_to be_invalid
+      expect(detection).to be_positive
+    end
+  end
+
+  context "with inexact matches" do
+    let(:samples) do
+      %w[---o---o---
+         ---o---o---
+         --ooooooo--
+         -oo-ooo-oo-
+         ooooooooooo
+         o-ooooooo-o
+         o-o-----o-o
+         ---oo-oo---]
+    end
+
+    it "still detects an intruder" do
+      samples.each { |sample| detection.push(sample, column) }
 
       expect(detection).not_to be_invalid
       expect(detection).to be_positive

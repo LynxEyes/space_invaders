@@ -1,4 +1,8 @@
+require "damerau-levenshtein"
+
 class Detection
+  MAX_LINE_DEVIATION = 2
+
   def initialize(intruder, column_number)
     @intruder = intruder
     @column_number = column_number
@@ -31,7 +35,7 @@ class Detection
   private
 
   def current_line_matches(sample)
-    @intruder.bitmap[@current_line] == sample
+    DamerauLevenshtein.distance(@intruder.bitmap[@current_line], sample) <= MAX_LINE_DEVIATION
   end
 
   def matched_all_intruder?
