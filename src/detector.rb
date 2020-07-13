@@ -1,14 +1,14 @@
-require_relative "./detection"
+require_relative "./detection.rb"
 
 class Detector
-  def initialize(intruder)
-    @intruder = intruder
+  def initialize(intruder_bitmap)
+    @intruder_bitmap = intruder_bitmap
     @detections = []
   end
 
   def push(line, line_number)
     line.split("")
-        .each_cons(@intruder.width)
+        .each_cons(intruder_width)
         .map(&:join)
         .each_with_index do |sample, column_number|
           check_for_new_detection(sample, column_number)
@@ -22,10 +22,14 @@ class Detector
 
   private
 
-  def check_for_new_detection(sample, column_number)
-    return unless Detection.matches_head?(@intruder, sample)
+  def intruder_width
+    @intruder_bitmap.first.length
+  end
 
-    @detections << Detection.new(@intruder, column_number)
+  def check_for_new_detection(sample, column_number)
+    return unless Detection.matches_head?(@intruder_bitmap, sample)
+
+    @detections << Detection.new(@intruder_bitmap, column_number)
   end
 
   def push_sample_to_detections(sample, column_number)

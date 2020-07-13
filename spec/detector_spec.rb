@@ -1,10 +1,9 @@
 require "spec_helper"
 require "./src/detector.rb"
-require "./src/intruder.rb"
 
 RSpec.describe Detector do
   let(:intruder) do
-    Intruder.new(%w[
+    %w[
       --o-----o--
       ---o---o---
       --ooooooo--
@@ -13,7 +12,7 @@ RSpec.describe Detector do
       o-ooooooo-o
       o-o-----o-o
       ---oo-oo---
-    ])
+    ]
   end
 
   subject(:detector) { described_class.new(intruder) }

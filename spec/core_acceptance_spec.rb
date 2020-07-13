@@ -1,11 +1,10 @@
 require "spec_helper"
 require "./src/scanner.rb"
 require "./src/detector.rb"
-require "./src/intruder.rb"
 
 RSpec.describe "Core Acceptance criteria" do
   let(:intruder1) do
-    Intruder.new(%w[
+    %w[
       --o-----o--
       ---o---o---
       --ooooooo--
@@ -14,11 +13,11 @@ RSpec.describe "Core Acceptance criteria" do
       o-ooooooo-o
       o-o-----o-o
       ---oo-oo---
-    ])
+    ]
   end
 
   let(:intruder2) do
-    Intruder.new(%w[
+    %w[
       ---oo---
       --oooo--
       -oooooo-
@@ -27,7 +26,7 @@ RSpec.describe "Core Acceptance criteria" do
       --o--o--
       -o-oo-o-
       o-o--o-o
-    ])
+    ]
   end
 
   let(:scanner) do

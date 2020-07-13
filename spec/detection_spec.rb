@@ -1,17 +1,16 @@
 require "spec_helper"
 require "./src/detection.rb"
-require "./src/intruder.rb"
 
 RSpec.describe Detection do
   let(:intruder) do
-    Intruder.new(%w[--o-----o--
-                    ---o---o---
-                    --ooooooo--
-                    -oo-ooo-oo-
-                    ooooooooooo
-                    o-ooooooo-o
-                    o-o-----o-o
-                    ---oo-oo---])
+    %w[ --o-----o--
+        ---o---o---
+        --ooooooo--
+        -oo-ooo-oo-
+        ooooooooooo
+        o-ooooooo-o
+        o-o-----o-o
+        ---oo-oo--- ]
   end
 
   let(:column) { 2 }
