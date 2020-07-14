@@ -14,7 +14,8 @@ RSpec.describe Detection do
   end
 
   let(:column) { 2 }
-  subject(:detection) { described_class.new(intruder, column) }
+  let(:line) { 3 }
+  subject(:detection) { described_class.new(intruder, column, line) }
 
   context "with clean samples matching the intruder" do
     let(:samples) do

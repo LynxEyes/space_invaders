@@ -11,7 +11,7 @@ class Detector
         .each_cons(intruder_width)
         .map(&:join)
         .each_with_index do |sample, column_number|
-          check_for_new_detection(sample, column_number)
+          check_for_new_detection(sample, column_number, line_number)
           push_sample_to_detections(sample, column_number)
         end
   end
@@ -26,10 +26,10 @@ class Detector
     @intruder_bitmap.first.length
   end
 
-  def check_for_new_detection(sample, column_number)
+  def check_for_new_detection(sample, column_number, line_number)
     return unless Detection.matches_head?(@intruder_bitmap, sample)
 
-    @detections << Detection.new(@intruder_bitmap, column_number)
+    @detections << Detection.new(@intruder_bitmap, column_number, line_number)
   end
 
   def push_sample_to_detections(sample, column_number)

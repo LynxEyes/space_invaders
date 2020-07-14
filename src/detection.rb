@@ -15,9 +15,13 @@ class Detection
   end
   # -----------------------------------------------------------------
 
-  def initialize(intruder_bitmap, column_number)
+  def initialize(intruder_bitmap, column_number, line_number)
     @intruder_bitmap = intruder_bitmap.dup
     @column_number = column_number
+    @line_number = line_number
+    @width = intruder_bitmap.first.length
+    @height = intruder_bitmap.length
+
     @current_deviation = 0
 
     @invalid = false
@@ -42,6 +46,15 @@ class Detection
 
   def invalid?
     @invalid
+  end
+
+  def position
+    {
+      x: @column_number,
+      y: @line_number,
+      width: @width,
+      height: @height
+    }
   end
 
   private
