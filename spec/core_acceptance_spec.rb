@@ -28,24 +28,47 @@ RSpec.describe "Core Acceptance criteria" do
     ]
   end
 
-  let(:scanner) do
-    file = File.open("./spec/fixtures/acceptance_radar_sample", "r")
-    Scanner.new(file, [intruder1, intruder2])
+  context "when trying exact matches" do
+    let(:scanner) do
+      file = File.open("./spec/fixtures/acceptance_radar_sample", "r")
+      Scanner.new(file, [intruder1, intruder2], algorithm: "exact")
+    end
+
+    it "detects intruders" do
+      detections = scanner.scan
+
+      expect(detections.length).to eq(3)
+    end
+
+    it "exposes positions for each detected intruder" do
+      detections = scanner.scan
+
+      expect(detections[0].position).to match(hash_including(x: 10, y:  3, width: 11, height: 8))
+      expect(detections[1].position).to match(hash_including(x: 70, y: 25, width:  8, height: 8))
+      expect(detections[2].position).to match(hash_including(x: 39, y: 33, width:  8, height: 8))
+    end
   end
 
-  it "detects intruders" do
-    detections = scanner.scan
+  context "when trying approximate matches" do
+    let(:scanner) do
+      file = File.open("./spec/fixtures/acceptance_radar_sample", "r")
+      Scanner.new(file, [intruder1, intruder2], algorithm: "approximate")
+    end
 
-    expect(detections.length).to eq(5)
-  end
+    it "detects intruders" do
+      detections = scanner.scan
 
-  it "exposes positions for each detected intruder" do
-    detections = scanner.scan
+      expect(detections.length).to eq(5)
+    end
 
-    expect(detections[0].position).to match(hash_including(x: 10, y:  3, width: 11, height: 8))
-    expect(detections[1].position).to match(hash_including(x: 25, y: 14, width: 11, height: 8))
-    expect(detections[2].position).to match(hash_including(x: 53, y:  6, width:  8, height: 8))
-    expect(detections[3].position).to match(hash_including(x: 70, y: 25, width:  8, height: 8))
-    expect(detections[4].position).to match(hash_including(x: 39, y: 33, width:  8, height: 8))
+    it "exposes positions for each detected intruder" do
+      detections = scanner.scan
+
+      expect(detections[0].position).to match(hash_including(x: 10, y:  3, width: 11, height: 8))
+      expect(detections[1].position).to match(hash_including(x: 25, y: 14, width: 11, height: 8))
+      expect(detections[2].position).to match(hash_including(x: 53, y:  6, width:  8, height: 8))
+      expect(detections[3].position).to match(hash_including(x: 70, y: 25, width:  8, height: 8))
+      expect(detections[4].position).to match(hash_including(x: 39, y: 33, width:  8, height: 8))
+    end
   end
 end

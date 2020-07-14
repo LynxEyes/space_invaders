@@ -1,5 +1,7 @@
 require "spec_helper"
 require "./src/detection.rb"
+require "./src/detection_algotithm/exact.rb"
+require "./src/detection_algotithm/approximate.rb"
 
 RSpec.describe Detection do
   let(:intruder) do
@@ -15,7 +17,8 @@ RSpec.describe Detection do
 
   let(:column) { 2 }
   let(:line) { 3 }
-  subject(:detection) { described_class.new(intruder, column, line) }
+  let(:algorithm) { DetectionAlgorithm::Exact }
+  subject(:detection) { described_class.new(intruder, algorithm, column, line) }
 
   context "with clean samples matching the intruder" do
     let(:samples) do
@@ -94,6 +97,8 @@ RSpec.describe Detection do
   end
 
   context "with inexact matches" do
+    let(:algorithm) { DetectionAlgorithm::Approximate }
+
     context "with minimal difference" do
       let(:samples) do
         %w[---o---o---

@@ -1,8 +1,9 @@
 require_relative "./detection.rb"
 
 class Detector
-  def initialize(intruder_bitmap)
+  def initialize(intruder_bitmap, detection_algorithm)
     @intruder_bitmap = intruder_bitmap
+    @detection_algorithm = detection_algorithm
     @detections = []
   end
 
@@ -27,9 +28,9 @@ class Detector
   end
 
   def check_for_new_detection(sample, column_number, line_number)
-    return unless Detection.matches_head?(@intruder_bitmap, sample)
+    return unless @detection_algorithm.matches_head?(@intruder_bitmap, sample)
 
-    @detections << Detection.new(@intruder_bitmap, column_number, line_number)
+    @detections << Detection.new(@intruder_bitmap, @detection_algorithm, column_number, line_number)
   end
 
   def push_sample_to_detections(sample, column_number)

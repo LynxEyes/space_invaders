@@ -1,29 +1,13 @@
-require "damerau-levenshtein"
-
 class Detection
-  # -----------------------------------------------------------------
-  # NOTE: This could be isolated into an strategy pattern like thing!!
-  MAX_LINE_DEVIATION = 2
-  MAX_ALLOWED_DEVIATION = 3
-
-  def self.deviation(line, sample)
-    DamerauLevenshtein.distance(line, sample)
-  end
-
-  def self.matches_head?(intruder_bitmap, sample)
-    deviation(intruder_bitmap.first, sample) <= MAX_LINE_DEVIATION
-  end
-  # -----------------------------------------------------------------
-
-  def initialize(intruder_bitmap, column_number, line_number)
-    @intruder_bitmap = intruder_bitmap.dup
+  def initialize(intruder_bitmap, detection_algorithm, column_number, line_number)
+    @detection_algorithm = detection_algorithm
     @column_number = column_number
     @line_number = line_number
     @width = intruder_bitmap.first.length
     @height = intruder_bitmap.length
 
+    @intruder_bitmap = intruder_bitmap.dup
     @current_deviation = 0
-
     @invalid = false
     @positive = false
   end
@@ -33,10 +17,8 @@ class Detection
     return if column_number != @column_number
 
     line = next_bitmap_line!
-    @current_deviation += self.class.deviation(line, sample)
-    # -----------------------------------------------------------------
-    @invalid = @current_deviation > MAX_ALLOWED_DEVIATION # This could also be part of the strategy
-    # -----------------------------------------------------------------
+    @current_deviation += @detection_algorithm.deviation(line, sample)
+    @invalid = past_allowed_deviation?
     @positive = !invalid? && finished?
   end
 
@@ -61,6 +43,10 @@ class Detection
 
   def next_bitmap_line!
     @intruder_bitmap.shift
+  end
+
+  def past_allowed_deviation?
+    @detection_algorithm.past_allowed_deviation?(@current_deviation)
   end
 
   def finished?

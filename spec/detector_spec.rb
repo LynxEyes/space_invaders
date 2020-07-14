@@ -1,5 +1,6 @@
 require "spec_helper"
 require "./src/detector.rb"
+require "./src/detection_algotithm/exact.rb"
 
 RSpec.describe Detector do
   let(:intruder) do
@@ -15,7 +16,7 @@ RSpec.describe Detector do
     ]
   end
 
-  subject(:detector) { described_class.new(intruder) }
+  subject(:detector) { described_class.new(intruder, DetectionAlgorithm::Exact) }
 
   context "" do
     let(:sample_lines) do
